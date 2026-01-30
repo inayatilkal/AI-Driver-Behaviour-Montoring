@@ -64,7 +64,7 @@ export function useDriverMonitoring() {
       const detectorConfig: faceLandmarksDetection.MediaPipeFaceMeshMediaPipeModelConfig =
       {
         runtime: "mediapipe",
-        solutionPath: "https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh",
+        solutionPath: "https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4.1633559619",
         refineLandmarks: true,
       };
 
@@ -74,7 +74,7 @@ export function useDriverMonitoring() {
       );
     } catch (error) {
       console.error("Error initializing face detector:", error);
-      alert("Failed to load face detection model. Please refresh the page.");
+      alert(`Failed to load face detection model: ${(error as Error).message}`);
     }
   }, []);
 
