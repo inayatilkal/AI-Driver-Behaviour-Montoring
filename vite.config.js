@@ -3,7 +3,21 @@ import react from "@vitejs/plugin-react";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    {
+      name: "mediapipe_workaround",
+      transform(code, id) {
+        if (id.includes("@mediapipe/face_mesh/face_mesh.js")) {
+          return {
+            code: code + "\nexports.FaceMesh = FaceMesh;\nexports.Facemesh = Facemesh;",
+            map: null,
+          };
+        }
+        return null;
+      },
+    },
+  ],
   optimizeDeps: {
     exclude: ["lucide-react"],
   },
