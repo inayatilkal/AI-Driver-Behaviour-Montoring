@@ -64,7 +64,7 @@ export function useDriverMonitoring() {
       const detectorConfig: faceLandmarksDetection.MediaPipeFaceMeshMediaPipeModelConfig =
       {
         runtime: "mediapipe",
-        solutionPath: "https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4.1633559619",
+        solutionPath: "https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4.1633559619/",
         refineLandmarks: true,
       };
 
