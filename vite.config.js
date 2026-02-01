@@ -10,7 +10,7 @@ export default defineConfig({
       transform(code, id) {
         if (id.includes("@mediapipe/face_mesh/face_mesh.js")) {
           return {
-            code: code + "\nexports.FaceMesh = FaceMesh;\nexports.Facemesh = Facemesh;",
+            code: code + "\nexports.FaceMesh = globalThis.FaceMesh;\nexports.Facemesh = globalThis.FaceMesh;",
             map: null,
           };
         }
