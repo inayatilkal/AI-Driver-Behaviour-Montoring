@@ -11,6 +11,15 @@ import {
   getEyeLandmarks,
 } from "../utils/detectionUtil";
 
+export interface SessionReport {
+  totalDuration: number;
+  drowsyDuration: number;
+  distractedDuration: number;
+  phoneUsageDuration: number;
+  startTime: number;
+  endTime: number;
+}
+
 export function useDriverMonitoring() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -33,6 +42,7 @@ export function useDriverMonitoring() {
     eyeAspectRatio: 0,
     headPose: { pitch: 0, yaw: 0 },
   });
+  const [sessionReport, setSessionReport] = useState<SessionReport | null>(null);
 
   const playAlertSound = useCallback(() => {
     if (!audioContextRef.current) {
@@ -208,6 +218,7 @@ export function useDriverMonitoring() {
 
   const startDetection = useCallback(async () => {
     try {
+      setSessionReport(null); // Clear previous report
       setIsDetecting(true);
       await initializeDetector();
       await startCamera();
@@ -232,17 +243,18 @@ export function useDriverMonitoring() {
 
   const stopDetection = useCallback(() => {
     if (startTimeRef.current > 0) {
-      const totalDuration = (Date.now() - startTimeRef.current) / 1000;
-      const report = `
-Driver Safety Report
--------------------
-Total Session Time: ${totalDuration.toFixed(1)}s
+      const endTime = Date.now();
+      const totalDuration = (endTime - startTimeRef.current) / 1000;
 
-Time Distracted: ${distractedDurationRef.current.toFixed(1)}s
-Time Drowsy: ${drowsyDurationRef.current.toFixed(1)}s
-Time Using Phone: ${phoneUsageDurationRef.current.toFixed(1)}s
-    `.trim();
-      alert(report);
+      setSessionReport({
+        totalDuration,
+        drowsyDuration: drowsyDurationRef.current,
+        distractedDuration: distractedDurationRef.current,
+        phoneUsageDuration: phoneUsageDurationRef.current,
+        startTime: startTimeRef.current,
+        endTime,
+      });
+
       startTimeRef.current = 0;
     }
 
@@ -266,6 +278,10 @@ Time Using Phone: ${phoneUsageDurationRef.current.toFixed(1)}s
     }
   }, []);
 
+  const clearSessionReport = useCallback(() => {
+    setSessionReport(null);
+  }, []);
+
   useEffect(() => {
     return () => {
       stopDetection();
@@ -280,7 +296,9 @@ Time Using Phone: ${phoneUsageDurationRef.current.toFixed(1)}s
     canvasRef,
     isDetecting,
     detectionState,
+    sessionReport,
     startDetection,
     stopDetection,
+    clearSessionReport,
   };
 }
