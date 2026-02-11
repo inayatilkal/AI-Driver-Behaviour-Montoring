@@ -5,6 +5,8 @@ import { GuidancePanel } from './components/GuidancePanel';
 import { SessionReport } from './components/SessionReport';
 import { StatusPanel } from './components/StatusPanel';
 
+
+
 function App() {
   const {
     videoRef,

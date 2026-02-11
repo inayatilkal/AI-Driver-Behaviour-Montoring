@@ -145,7 +145,7 @@ export function useDriverMonitoring() {
 
         const isDrowsy = detectDrowsiness(avgEAR);
         const isDistracted = detectDistraction(headPose.yaw);
-        const isUsingPhone = detectPhoneUsage(headPose.pitch, headPose.yaw);
+        const isUsingPhone = detectPhoneUsage(headPose.pitch);
 
         const now = Date.now();
         if (lastFrameTimeRef.current > 0) {

@@ -1,4 +1,4 @@
-import * as faceLandmarksDetection from "@tensorflow-models/face-landmarks-detection";
+
 
 export interface DetectionState {
   isDistracted: boolean;
@@ -60,9 +60,7 @@ export function detectDistraction(
 
 export function detectPhoneUsage(
   pitch: number,
-  yaw: number,
-  pitchThreshold: number = 42,
-  yawThreshold: number = 150
+  pitchThreshold: number = 42
 ): boolean {
   return pitch < pitchThreshold;
 }
